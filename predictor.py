@@ -26,4 +26,4 @@ labels = ["Calling",
 "Texting",
 "Using Laptop"]
 
-labels[np.argmax(pred)]
+labels[np.argmax(output)]
