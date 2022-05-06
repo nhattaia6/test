@@ -76,8 +76,8 @@ opt = Adam(lr=0.001)
 classifier.compile(optimizer=opt, loss=keras.losses.categorical_crossentropy, metrics=['accuracy'])
 
 from keras.callbacks import ModelCheckpoint, EarlyStopping
-checkpoint = ModelCheckpoint("vgg16_1.h5", monitor='val_acc', verbose=1, save_best_only=True, save_weights_only=False, mode='auto', period=1)
-early = EarlyStopping(monitor='val_acc', min_delta=0, patience=20, verbose=1, mode='auto')
+checkpoint = ModelCheckpoint("vgg16_1.h5", monitor='val_accuracy', verbose=1, save_best_only=True, save_weights_only=False, mode='auto', period=1)
+early = EarlyStopping(monitor='val_accuracy', min_delta=0, patience=20, verbose=1, mode='auto')
 
 
 #Part 2 Fittting the CNN to the image
@@ -115,7 +115,7 @@ training_set = trdata.flow_from_directory(directory="action_net_v1/train",target
 tsdata = ImageDataGenerator()
 test_set = tsdata.flow_from_directory(directory="action_net_v1/test", target_size=(224,224))
 
-hist = classifier.fit_generator(steps_per_epoch=100,generator=training_set, validation_data= test_set, validation_steps=10,epochs=100,callbacks=[checkpoint,early])
+hist = classifier.fit_generator(steps_per_epoch=100,generator=training_set, validation_data= test_set, validation_steps=2,epochs=2,callbacks=[checkpoint,early])
 
 
 #Saving the model
@@ -125,13 +125,14 @@ classifier.save('Trained_model.h5')
 print(hist.history.keys())
 import matplotlib.pyplot as plt
 # summarize history for accuracy
-plt.plot(hist.history['acc'])
-plt.plot(hist.history['val_acc'])
+plt.plot(hist.history['accuracy'])
+plt.plot(hist.history['val_accuracy'])
 plt.title('model accuracy')
 plt.ylabel('accuracy')
 plt.xlabel('epoch')
 plt.legend(['train', 'test'], loc='upper left')
-plt.show()
+#plt.show()
+plt.savefig('accuracy.png')
 # summarize history for loss
 
 plt.plot(hist.history['loss'])
@@ -140,5 +141,15 @@ plt.title('model loss')
 plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(['train', 'test'], loc='upper left')
-plt.show()
+plt.savefig('loss.png')
+#plt.show()
 
+from keras.preprocessing import image
+img = image.load_img("pre.jpg",target_size=(224,224))
+img = np.asarray(img)
+#plt.imshow(img)
+img = np.expand_dims(img, axis=0)
+from keras.models import load_model
+saved_model = load_model("vgg16_1.h5")
+output = saved_model.predict(img)
+print("RS:", output)
