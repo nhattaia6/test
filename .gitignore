@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+vgg16_1.h5
+Trained_model.h5
+
 # C extensions
 *.so
 
