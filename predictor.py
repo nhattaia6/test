@@ -1,4 +1,5 @@
 from keras.preprocessing import image
+import numpy as np
 img = image.load_img("pre.jpg",target_size=(224,224))
 img = np.asarray(img)
 #plt.imshow(img)
