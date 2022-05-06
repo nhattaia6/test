@@ -1,6 +1,3 @@
-__author__ = 'Rupesh Poudel'
-__SourcerepoLink__ = 'https://github.com/rrupeshh/Simple-Sign-Language-Detector'
-
 # Part 1 - Building the CNN
 #importing the Keras libraries and packages
 # from keras.models import Sequential
@@ -121,9 +118,9 @@ test_set = tsdata.flow_from_directory(directory="action_net_v1/test", target_siz
 hist = classifier.fit_generator(steps_per_epoch=100,generator=training_set, validation_data= test_set, validation_steps=10,epochs=100,callbacks=[checkpoint,early])
 
 
-'''#Saving the model
+#Saving the model
 import h5py
-classifier.save('Trained_model.h5')'''
+classifier.save('Trained_model.h5')
 
 print(hist.history.keys())
 import matplotlib.pyplot as plt
